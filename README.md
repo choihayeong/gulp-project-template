@@ -9,17 +9,19 @@
 
 - [공식문서 참고](https://gulpjs.com/docs/en/getting-started/quick-start)
 
-> `cb`는 뭘까? 
-> 여기서 말하는 cb는 callback 함수의 약자로 보임. 여기서 대표적인 콜백함수의 예시는 setTimeout과 setInterval에서 쓰이는 함수들을 콜백함수로 말할 수 있다.
-> 예를 들어 setTimeout(() => {console.log("Time's up")}, 3000); 에서 () => {console.log("Time's up")} 이 부분을 콜백함수라 한다.
+> `cb`는 뭘까? <br />
+> 여기서 말하는 cb는 callback 함수의 약자로 보임. 여기서 대표적인 콜백함수의 예시는 setTimeout과 setInterval에서 쓰이는 함수들을 콜백함수로 말할 수 있다. <br />
+> 예를 들어 `setTimeout(() => {console.log("Time's up")}, 3000);` 에서 `() => {console.log("Time's up")}` 이 부분을 콜백함수라 한다.
 
 ### Basic Usage - 1
 
-- `gulp` 모듈 안에 `series`, `parallel` 
+- `gulp`에 내장되어있는 `series()`, `parallel()`
 
-    * `series는` 다음 예시에서 `transpile` 다음 `bundle` 순서대로 처리
+    * `series`는 다음 예시에서 `transpile` 다음 `bundle` 순서대로 처리
     
-    * `parallel은` 말그래도 병렬 처리를 함 (순서 관계 없음)
+    * `parallel`은 말그래도 병렬 처리를 함 (순서 관계 없음)
+
+- 아래 예시에서 터미널에 `gulp build`를 입력하면 실행 결과를 알 수 있다.    
 
 ```javascript
 const { series } = require("gulp");
@@ -108,9 +110,9 @@ exports.build = series(
 
 ### Basic Usage - 2
 
-- `gulp` 모듈 안에 `src`, `dest` 
+- `gulp`에 내장되어있는 `src`, `dest` 
 
-    * 다음 예시는 소스파일(src) 중 js 파일이 output 폴더 내 js 파일로 빌드되는(dest) 기본적인 구조이다.
+    * 다음 예시는 src 폴더 내 js 파일이 output 폴더 내 js 파일로 추출되는(dest) 기본적인 구조이다.
 
 ```javascript
 const { src, dest } = require('gulp');
@@ -134,10 +136,6 @@ exports.default = function() {
 }
 ```
 
-```bash
-gulp
-```
-
 - 예시에서 gulp-babel, gulp-uglify, gulp-rename을 적용하려면 npm으로 설치를 해줘야함.
 
     * [gulp-babel](https://www.npmjs.com/package/gulp-babel)
@@ -146,8 +144,11 @@ gulp
 
     * [gulp-rename](https://www.npmjs.com/package/gulp-uglify)
 
+```bash
+npm i gulp-babel gulp-uglify gulp-rename
+```
 
-- 이 예시는 src 폴더 내 js파일들을 babel로 변환시켰다가 output 폴더로 추출 후 uglify 적용시킨 것을 다시 한번 .min.js로 붙여 output 파일 내 추출을 하는 예제이다.
+- 이 예시는 `src` 폴더 내 js파일들을 babel로 트랜스파일링 한 뒤 output 폴더로 추출 하고 uglify 적용시킨 것을 다시 한번 .min.js로 붙여 output 파일 내에 추출을 하는 예제이다.
 
 ```javascript
 const { src, dest } = require("gulp");
@@ -169,9 +170,9 @@ exports.default = streamTask;
 
 ### Basic Usage - 3
 
-- gulp에 내장된 watch를 알아보자.... 
+- gulp에 내장된 `watch`를 알아보자.... 
 
-    * gulp에서 watch는 파일이 수정될 때 이를 감지하는 것을 말한다. 
+    * gulp에서 `watch`는 파일이 수정될 때 이를 감지하는 것을 말한다. 
 
 - 다음 예시에서 src 폴더 내 css 파일이 변할 경우 css 함수를 실행하게 되고, js파일이 수정될 경우 clean 함수 실행 후 javascript 함수가 실행된다.
 
