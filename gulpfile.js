@@ -1,13 +1,23 @@
-const { series, parallel } = require("gulp");
+const { watch, series } = require("gulp");
 
-function transpile(cb) {
+function clean(cb) {
     cb();
-    console.log("transpile");
+    console.log("gulp clean");
 }
 
-function bundle(cb) {
+function javascript(cb) {
     cb();
-    console.log("bundle");
+    console.log("gulp javascript");
 }
 
-exports.build = series(transpile, bundle);
+function css(cb) {
+    cb();
+    console.log("css");
+}
+
+function watching() {
+    watch("src/*css", css);
+    watch("src/*.js", series(clean, javascript));
+}
+
+exports.default = watching;
