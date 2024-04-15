@@ -201,3 +201,78 @@ function watching() {
 
 exports.default = watching;
 ```
+
+## Setting
+
+### Template
+
+- 템플릿은 html로 이루어진 마크업 문서라고 보면 됨. 여러가지 Template Engine이 있는데 기본적인 마크업 구조가 같음
+
+    * EJS, Pug, Nunjucks, Handlebars, Liquid 등이 있음 여기서는 ejs를 써보겠음
+
+- 다음과 같이 설치
+
+```bash
+npm install --save-dev gulp-ejs
+```
+
+- gulpfile.js에서 다음을 추가
+
+```javascript
+const ejs = require("gulp-ejs");
+```
+
+- src 폴더 내에 파일 구조를 다음과 같이 적용 
+
+    * views 폴더 내에 html 파일을 추가함.
+
+    * include 폴더에는 html 파일들이 반복되는 내용들을 넣어준다거나 컴포넌트처럼 분리할 때 쓰면 된다.
+
+```
+\ (root)
+└ src
+    └ views
+        └ include
+```
+
+- home.html, sub01.html, sub02.html 파일 내에 `<head>` 태그가 동일 하므로 `<head>` 태그를 분리해서 include 폴더 내에 넣어주고 나머지 세 개 html 파일에는 다음과 같이 적용 하면 된다.
+
+```html
+<!-- ./src/views/include/head.html -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gulp Project Template</title>
+</head>
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./include/inc_head.html") %>
+<body>
+    <div class="wrap" id="home">
+        Home : Main
+    </div>
+</body>
+</html>
+```
+
+- gulpfile.js 에는 다음과 같이 작성해쥼
+
+    * 아래 예시에서 현재는 parallel 이나 series 둘 중 하나 써도 상관 없음!
+
+    * 터미널에 gulp 명령어를 입력하면 output 폴더가 추출이 되는 걸 확인 할 수 있다.
+
+```javascript
+const { src, dest, parallel } = require("gulp");
+const ejs = require("gulp-ejs");
+
+const gulpEJS = () => 
+    src(["./src/views/**/*.html", '!'+"./src/views" + "/**/include/*.html"])
+    .pipe(ejs())
+    .pipe(dest("output/"));
+
+
+exports.default = parallel([gulpEJS]);
+```

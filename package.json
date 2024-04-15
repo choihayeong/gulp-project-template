@@ -13,7 +13,8 @@
   "author": "hychoi318@gmail.com",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^5.0.0"
+    "gulp": "^5.0.0",
+    "gulp-ejs": "^5.1.0"
   },
   "dependencies": {
     "gulp-babel": "^8.0.0",

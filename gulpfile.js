@@ -1,23 +1,10 @@
-const { watch, series } = require("gulp");
+const { src, dest, parallel, series } = require("gulp");
+const ejs = require("gulp-ejs");
 
-function clean(cb) {
-    cb();
-    console.log("gulp clean");
-}
+const gulpEJS = () => 
+    src(["./src/views/**/*.html", '!'+"./src/views" + "/**/include/*.html"])
+    .pipe(ejs())
+    .pipe(dest("output/"));
 
-function javascript(cb) {
-    cb();
-    console.log("gulp javascript");
-}
 
-function css(cb) {
-    cb();
-    console.log("css");
-}
-
-function watching() {
-    watch("src/*css", css);
-    watch("src/*.js", series(clean, javascript));
-}
-
-exports.default = watching;
+exports.default = parallel([gulpEJS]);
