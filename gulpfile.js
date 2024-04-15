@@ -1,7 +1,13 @@
-function defaultTask(cb) {
-    // place code for your default task here
+const { series, parallel } = require("gulp");
+
+function transpile(cb) {
     cb();
-    console.log("default Task");
+    console.log("transpile");
 }
 
-exports.default = defaultTask;
+function bundle(cb) {
+    cb();
+    console.log("bundle");
+}
+
+exports.build = series(transpile, bundle);
