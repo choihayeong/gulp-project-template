@@ -14,10 +14,12 @@
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^3.0.2",
+    "browserify": "^17.0.0",
     "gulp": "^5.0.0",
     "gulp-ejs": "^5.1.0",
     "gulp-sass": "^5.1.0",
-    "sass": "^1.75.0"
+    "sass": "^1.75.0",
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "del": "^6.1.1",
