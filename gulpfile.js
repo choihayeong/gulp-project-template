@@ -7,13 +7,15 @@ const browserify = require("browserify");
 const source = require("vinyl-source-stream");
 const imagemin = require("gulp-imagemin");
 const inlineSource = require("gulp-inline-source");
+const htmlsplit = require("gulp-htmlsplit");
+const lec = require("gulp-line-ending-corrector");
 
 const ROOT = "/";
 const PORT = 8080;
 
 const ASSET_PATH = {
     HTML: {
-        src: "./src/views",
+        src: "./src/",
         dest: "./output/"
     },
     SCSS: {
@@ -36,12 +38,29 @@ const ASSET_PATH = {
  * @task : Templates
  */
 const gulpEJS = () => new Promise(resolve => {
-    src([ASSET_PATH.HTML.src+"/**/*.html", '!'+ASSET_PATH.HTML.src + "/**/include/*.html"])
+    src([ASSET_PATH.HTML.src+"/**/*.html", '!'+ASSET_PATH.HTML.src + "/_layouts/*.html"])
     .pipe(ejs())
+    .pipe(inlineSource({compress: false}))
     .pipe(dest(ASSET_PATH.HTML.dest));
 
     resolve();
 });
+
+const txtExport = () => new Promise(resolve => {
+    setTimeout(() => {
+        src("output/**/*.html")
+            .pipe(htmlsplit())
+            .pipe(
+                lec({
+                    eolc: "CRLF",
+                    encoding: "utf8",
+                })
+            )
+            .pipe(dest("output"));
+    }, 500);
+
+    resolve();
+})
 
 /**
  * @task : Sass 
@@ -91,7 +110,7 @@ const images = () => new Promise(resolve => {
 });
 
 const inlineResource = () =>
-    src("./src/**/*.html")
+    src([ASSET_PATH.HTML.src+"/**/*.html", '!'+ASSET_PATH.HTML.src + "/_layouts/*.html"])
         .pipe(inlineSource())
         .pipe(dest("./output"));
 
@@ -128,12 +147,12 @@ const clean = () => new Promise(resolve => {
     resolve();
 });
 
-const assets = parallel([gulpEJS, stylesheets, getBrowserScript, images]);
+const assets = series(parallel([gulpEJS, stylesheets, getBrowserScript, images]), txtExport);
 const liveServer = parallel([watching, bs]);
 
 exports.default = parallel(assets, liveServer);
 exports.server = series(liveServer);
 exports.build = series(clean, assets);
+exports.txt = series(txtExport);
+exports.all = series(clean, assets);
 exports.clean = series(clean);
-
-exports.inline = series(inlineResource);
